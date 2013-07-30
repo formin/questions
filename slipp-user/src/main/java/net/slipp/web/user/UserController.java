@@ -2,6 +2,7 @@ package net.slipp.web.user;
 
 import javax.servlet.http.HttpSession;
 
+import net.slipp.domain.user.Question;
 import net.slipp.domain.user.User;
 import net.slipp.service.user.PasswordMismatchException;
 import net.slipp.service.user.UserService;
@@ -75,4 +76,20 @@ public class UserController {
 			return "user/form";
 		}
 	}
+ 
+
+	@RequestMapping("/form_write")
+	public String form_write(Model model) throws Exception {
+		model.addAttribute("question", new Question());
+		return "user/form_write";
+	}
+
+/*
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public String writeForm(Model model) throws Exception { 
+		model.addAttribute("question", new Question());
+		return "user/form";
+	}
+*/
+
 }

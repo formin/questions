@@ -17,15 +17,21 @@
 		<p class="lead">Sustaninable Life, Programming, Programmer</p>
 	</div>
 	</header>     
-    
+  
+	<c:if test="${not empty questioin.title}">
+	
 	<div class="container">
 		<div class="container-fluid">
 			<div class="row-fluid">
 				<div class="span6">
-					<h1>여기에다가 본문을 넣으세요.</h1>
+					<h1>여기에다가 본문을 넣으세요!</h1>
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	</c:if>
+	
+	 
 </body>
 </html>

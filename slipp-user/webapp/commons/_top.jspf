@@ -18,6 +18,7 @@
               <li><a href="/users/form">회원가입</a></li>              
               </c:when>
               <c:otherwise>
+              <li><a href="/users/form_write">새글쓰기</a></li>
               <li><a href="/users/logout">로그아웃</a></li>
               <li><a href="/users/${loginUser.userId}/form">개인정보수정</a></li>              
               </c:otherwise>
