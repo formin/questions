@@ -23,13 +23,13 @@
 					<div class="control-group">
 						<label class="control-label" for="userId">사용자 아이디</label>
 						<div class="controls">
-							<input type="text" id="userId" name="userId" placeholder="">
+							<input type="text" id="userId" name="userId" value="formin" placeholder="">
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="password">비밀번호</label>
 						<div class="controls">
-							<input type="password" id="password" name="password" placeholder="">
+							<input type="password" id="password" name="password" value="self6677" placeholder="">
 						</div>
 					</div>
 					<c:if test="${not empty errorMessage}">

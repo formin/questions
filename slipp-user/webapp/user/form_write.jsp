@@ -19,18 +19,17 @@
 		<h1 class="write-title">새 글 작성</h1>
  
 		<c:set var="forwardUrl" value="/users" />
-		<c:if test="${not empty user.userId}">
-		<c:set var="forwardUrl" value="/users/${user.userId}" />
+		<c:if test="${not empty loginUser.userId}">
+		<c:set var="forwardUrl" value="/users/${loginUser.userId}/questioninsert" />
 		</c:if>
-				
-		<form id="question" class="form-write" action="${forwardUrl}" method="POST">
-			<input id="questionId" name="questionId" type="hidden" value=""/>
+		 
+		<form id="question" class="form-write" action="${forwardUrl}" method="POST"> 
 			<fieldset>
 				<div class="box-input-line">
-					<input id="title" name="title" class="inp-title" placeholder="제목" type="text" value=""/>
+					<input id="title" name="title" class="inp-title" placeholder="제목" type="text" value="test1"/>
 				</div>
 				<div class="box-write">
-					<textarea id="contents" name="contents" rows="15" cols="80"></textarea>
+					<textarea id="contents" name="contents" rows="15" cols="80">test2</textarea>
 				</div>
 				<div class="box-input-line">
 					<input id="plainTags" name="plainTags" class="inp-tags" placeholder="태그 - 공백 또는 쉼표로 구분 ex) javajigi, slipp" type="text" value=""/>

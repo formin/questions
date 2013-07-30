@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import net.slipp.domain.user.Question;
 import net.slipp.domain.user.User;
 import net.slipp.service.user.PasswordMismatchException;
+import net.slipp.service.user.QuestionService;
 import net.slipp.service.user.UserService;
 
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ public class UserController {
 	private static Logger log = LoggerFactory.getLogger(UserController.class);
 
 	private UserService userService = new UserService();
+	private QuestionService questionService = new QuestionService();
 
 	@RequestMapping("/form")
 	public String joinForm(Model model) throws Exception {
@@ -84,12 +86,24 @@ public class UserController {
 		return "user/form_write";
 	}
 
-/*
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public String writeForm(Model model) throws Exception { 
-		model.addAttribute("question", new Question());
-		return "user/form";
-	}
-*/
+	@RequestMapping(value = "/{userId}/questioninsert", method = RequestMethod.POST)
+	public String questioninsert(@PathVariable String userId, Question question, Model model) throws Exception {  
+		log.debug("question : {}", question); 
+		questionService.insert(question);
+		model.addAttribute("list", questionService.getArticleList());
+		return "user/list"; 
+	} 
+	
+	@RequestMapping(value = "/{userId}/questionupdate", method = RequestMethod.POST)
+	public String questionupdate(@PathVariable String userId, Question question, Model model) throws Exception {  
+		log.debug("question : {}", question);
+		try {
+			questionService.update(userId, question);
+			return "redirect:/";
+		} catch (PasswordMismatchException e) { 
+			model.addAttribute("errorMessage", " 확인해 주세요.");
+			return "user/form_write";
+		}
+	} 
 
 }

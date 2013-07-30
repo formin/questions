@@ -1,6 +1,8 @@
 package net.slipp.service.user;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import net.slipp.dao.user.QuestionDao; 
 import net.slipp.dao.user.UserDao;
@@ -14,43 +16,34 @@ public class QuestionService {
 
 	private static Logger log = LoggerFactory.getLogger(UserService.class);
 
-	public Question join(Question question) throws SQLException, ExistedUserException {
+	public Question insert(Question question) throws SQLException, ExistedUserException {
 		log.debug("Question : {}", question);
 		QuestionDao questionDao = new QuestionDao();
-		Question existedUser = questionDao.findByUserId(question.getUserId());
-		if (existedUser != null) {
-			throw new ExistedUserException(question.getUserId());
-		}
 
+		int maxIdx = questionDao.maxIdx();
+		question.setIdx(maxIdx);
+		
 		questionDao.insert(question);
 		return question;
 	}
-
-	public Question login(String userId, String password) throws SQLException, PasswordMismatchException {
-		QuestionDao questionDao = new QuestionDao();
-		Question question = questionDao.findByUserId(userId);
-		if (question == null) {
-			throw new PasswordMismatchException();
-		}
-		
-		if (!question.matchid(userId)) {
-			throw new PasswordMismatchException();
-		}
-
-		return question;
-	}
-
-	public Question findByUserId(String userId) throws SQLException {
-		QuestionDao questionDao = new QuestionDao();
-		return questionDao.findByUserId(userId);
+ 
+	public Integer maxIdx() throws SQLException {
+		QuestionDao questionDao = new QuestionDao(); 
+		return questionDao.maxIdx();
 	}
 
 	public void update(String userId, Question updateQuestion) throws SQLException, PasswordMismatchException {
-		Question question = findByUserId(userId);
-		if (question == null) {
-			throw new NullPointerException(userId + " question doesn't existed.");
-		}
-		question.update(updateQuestion);
+		int maxIdx = maxIdx();
+		updateQuestion.setIdx(maxIdx); 
+		updateQuestion.update(updateQuestion); 
 	}
-	
+
+	/*
+	 * 게시판 목록
+	 */
+	public ArrayList<Question> getArticleList() {
+		QuestionDao questionDao = new QuestionDao();  
+		return questionDao.getArticleList();
+	}
+	 
 }
