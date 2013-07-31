@@ -47,7 +47,7 @@ public class UserController {
 		try {
 			User user = userService.login(userId, password);
 			session.setAttribute("loginUser", user);
-			return "redirect:/";
+			return "user/list"; 
 		} catch (PasswordMismatchException e) {
 			return "user/login";
 		}
@@ -90,6 +90,12 @@ public class UserController {
 	public String questioninsert(@PathVariable String userId, Question question, Model model) throws Exception {  
 		log.debug("question : {}", question); 
 		questionService.insert(question);
+		model.addAttribute("list", questionService.getArticleList());
+		return "user/list"; 
+	} 
+
+	@RequestMapping(value = "/list")
+	public String list(Model model) throws Exception {   
 		model.addAttribute("list", questionService.getArticleList());
 		return "user/list"; 
 	} 
