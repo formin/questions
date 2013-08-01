@@ -1,5 +1,5 @@
 package net.slipp.domain.user; 
-
+ 
 import net.slipp.service.user.PasswordMismatchException;
  
 public class Question {
@@ -7,20 +7,20 @@ public class Question {
 	private String userId; 
 	private String title; 
 	private String contents; 
-	private String insertdate; 
-	private String updatedate;
+	private String insertdates; 
+	private String updatedates;
 	private String tag;
 	
-	public Question() {
+	public Question() { 
 	}
 
-	public Question(Integer idx, String userId, String title, String contents, String insert_date, String update_date, String tag) {
+	public Question(Integer idx, String userId, String title, String contents, String insertdates, String updatedates, String tag) {
 		this.idx = idx;
 		this.userId = userId;
 		this.title = title;
 		this.contents = contents;
-		this.insertdate = insert_date;
-		this.updatedate = update_date;
+		this.insertdates = insertdates;
+		this.updatedates = updatedates;
 		this.tag = tag;
 	}
  
@@ -57,20 +57,20 @@ public class Question {
 		this.contents = contents;
 	}
 
-	public String getInsertDate() {
-		return insertdate;
+	public String getInsertdates() {
+		return insertdates;
 	}
 
-	public void setInsertDate(String insertdate) {
-		this.insertdate = insertdate;
+	public void setInsertdates(String insertdates) {
+		this.insertdates = insertdates;
 	} 
 
-	public String getUpdateDate() {
-		return updatedate;
+	public String getUpdatedates() {
+		return updatedates;
 	}
 
-	public void setUpdateDate(String updatedate) {
-		this.updatedate = updatedate;
+	public void setUpdatedates(String updatedates) {
+		this.updatedates = updatedates;
 	}
 	
 	public boolean matchid(String loginId) {
@@ -85,29 +85,26 @@ public class Question {
 		if (!matchid(updateQuestion.getUserId())) {
 			throw new PasswordMismatchException();
 		}
-
-		this.idx = updateQuestion.idx;
+ 
 		this.title = updateQuestion.title;
-		this.contents = updateQuestion.contents;
-		this.insertdate = updateQuestion.insertdate;
-		this.updatedate = updateQuestion.updatedate;
-		this.tag = updateQuestion.tag;
+		this.contents = updateQuestion.contents; 
+		this.updatedates = updateQuestion.updatedates; 
 	}
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		final int prime = 41;
 		int result = 1;
-		result = prime * result + ((idx == null) ? 0 : idx.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((contents == null) ? 0 : contents.hashCode());
-		result = prime * result + ((insertdate == null) ? 0 : insertdate.hashCode());
-		result = prime * result + ((updatedate == null) ? 0 : updatedate.hashCode());
 		result = prime * result + ((tag == null) ? 0 : tag.hashCode());
+		result = prime * result + ((updatedates == null) ? 0 : updatedates.hashCode());
+		result = prime * result + ((insertdates == null) ? 0 : insertdates.hashCode());
+		result = prime * result + ((contents == null) ? 0 : contents.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		result = prime * result + ((idx == null) ? 0 : idx.hashCode());
 		return result;
-	}
-
+	} 
+	
 	@Override
 	public boolean equals(Object obj) {
 		
@@ -137,6 +134,6 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [userId=" + userId + ", title=" + title + ", contents=" + contents + ", idx=" + idx + "]";
+		return "Question [userId=" + userId + ", insertdates=" + insertdates + ", updatedates=" + updatedates + ", title=" + title + ", contents=" + contents + ", idx=" + idx + "]";
 	}
 }

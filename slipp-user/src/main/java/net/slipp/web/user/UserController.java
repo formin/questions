@@ -2,7 +2,6 @@ package net.slipp.web.user;
 
 import javax.servlet.http.HttpSession;
 
-import net.slipp.domain.user.Question;
 import net.slipp.domain.user.User;
 import net.slipp.service.user.PasswordMismatchException;
 import net.slipp.service.user.QuestionService;
@@ -43,11 +42,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(String userId, String password, HttpSession session) throws Exception {
+	public String login(String userId, String password, HttpSession session, Model model) throws Exception {
 		try {
 			User user = userService.login(userId, password);
 			session.setAttribute("loginUser", user);
-			return "user/list"; 
+			model.addAttribute("list", questionService.getArticleList());
+			return "question/list"; 
 		} catch (PasswordMismatchException e) {
 			return "user/login";
 		}
@@ -60,7 +60,8 @@ public class UserController {
 	}
 
 	@RequestMapping("/{userId}/form")
-	public String updateForm(@PathVariable String userId, Model model) throws Exception {
+	public String updateForm(@PathVariable String userId, HttpSession session, Model model) throws Exception {
+
 		User user = userService.findByUserId(userId);
 		model.addAttribute("user", user);
 		return "user/form";
@@ -79,37 +80,6 @@ public class UserController {
 		}
 	}
  
-
-	@RequestMapping("/form_write")
-	public String form_write(Model model) throws Exception {
-		model.addAttribute("question", new Question());
-		return "user/form_write";
-	}
-
-	@RequestMapping(value = "/{userId}/questioninsert", method = RequestMethod.POST)
-	public String questioninsert(@PathVariable String userId, Question question, Model model) throws Exception {  
-		log.debug("question : {}", question); 
-		questionService.insert(question);
-		model.addAttribute("list", questionService.getArticleList());
-		return "user/list"; 
-	} 
-
-	@RequestMapping(value = "/list")
-	public String list(Model model) throws Exception {   
-		model.addAttribute("list", questionService.getArticleList());
-		return "user/list"; 
-	} 
-	
-	@RequestMapping(value = "/{userId}/questionupdate", method = RequestMethod.POST)
-	public String questionupdate(@PathVariable String userId, Question question, Model model) throws Exception {  
-		log.debug("question : {}", question);
-		try {
-			questionService.update(userId, question);
-			return "redirect:/";
-		} catch (PasswordMismatchException e) { 
-			model.addAttribute("errorMessage", " 확인해 주세요.");
-			return "user/form_write";
-		}
-	} 
+ 
 
 }

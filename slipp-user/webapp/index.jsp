@@ -8,6 +8,6 @@
 
 </head>
 <body>
-     <% response.sendRedirect("users/list"); %>
+     <% response.sendRedirect("questions/list"); %>
 </body>
 </html>

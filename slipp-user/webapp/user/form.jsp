@@ -15,10 +15,24 @@
 	<div class="container">
 		<div class="row">
 			<div class="span12">
-				<section id="typography">
+				 
+              <c:choose>
+              <c:when test="${empty loginUser}">
+              
 				<div class="page-header">
 					<h1>회원가입</h1>
 				</div>
+				       
+              </c:when>
+              <c:otherwise>
+              
+				<div class="page-header">
+					<h1>개인정보수정</h1>
+				</div>
+				          
+              </c:otherwise>
+              </c:choose>
+              
 				
 				<c:set var="forwardUrl" value="/users" />
 				<c:if test="${not empty user.userId}">
@@ -31,7 +45,7 @@
 						<div class="controls">
 							<c:choose>
 							<c:when test="${empty user.userId}">
-							<input type="text" id="userId" name="userId" value="${user.userId}" placeholder="">
+							<input type="text" id="userId" name="userId" value="${user.userId}">
 							</c:when>
 							<c:otherwise>
 							<input type="hidden" name="userId" value="${user.userId}" />
@@ -43,19 +57,19 @@
 					<div class="control-group">
 						<label class="control-label" for="password">비밀번호</label>
 						<div class="controls">
-							<input type="password" id="password" name="password" value="${user.password}" placeholder="">
+							<input type="password" id="password" name="password" value="${user.password}">
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="name">이름</label>
 						<div class="controls">
-							<input type="text" id="name" name="name" value="${user.name}" placeholder="">
+							<input type="text" id="name" name="name" value="${user.name}">
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="email">이메일</label>
 						<div class="controls">
-							<input type="text" id="email" name="email" value="${user.email}" placeholder="">
+							<input type="text" id="email" name="email" value="${user.email}">
 						</div>
 					</div>
 					<c:if test="${not empty errorMessage}">
@@ -67,10 +81,11 @@
 					</c:if>
 					<div class="control-group">
 						<div class="controls">
-							<button type="submit" class="btn btn-primary">회원가입</button>
+							<button type="submit" class="btn btn-primary">완료</button>
 						</div>
 					</div>
 				</form>
+			    
 			</div>
 		</div>
 	</div>
