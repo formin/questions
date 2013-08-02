@@ -37,7 +37,7 @@ public class UserServiceTest {
 	
 	@Test
 	public void 로그인_성공() throws Exception {
-		String userId = "admin";
+		String userId = "userId1";
 		String password = "password";
 		UserService userService = new UserService();
 		User user = userService.login(userId, password);
