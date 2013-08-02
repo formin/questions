@@ -1,27 +1,30 @@
 package net.slipp.domain.user; 
  
 import net.slipp.service.user.PasswordMismatchException;
- 
+
+/*
+ * @class Question
+ * @brief QnA 게시물클래스.
+ */
 public class Question {
-	private Integer idx;
-	private String userId; 
-	private String title; 
-	private String contents; 
-	private String insertdates; 
-	private String updatedates;
-	private String tag;
+	
+	private Integer idx;		// 	게시물번호.
+	private String userId; 		//	사용자아이디.
+	private String title; 		//	제목.
+	private String contents; 	//	본문.
+	private String insertdates; //	입력날짜.
+	private String updatedates; //	수정날짜.
 	
 	public Question() { 
 	}
 
-	public Question(Integer idx, String userId, String title, String contents, String insertdates, String updatedates, String tag) {
+	public Question(Integer idx, String userId, String title, String contents, String insertdates, String updatedates) {
 		this.idx = idx;
 		this.userId = userId;
 		this.title = title;
 		this.contents = contents;
 		this.insertdates = insertdates;
-		this.updatedates = updatedates;
-		this.tag = tag;
+		this.updatedates = updatedates; 
 	}
  
 
@@ -80,7 +83,12 @@ public class Question {
 		
 		return loginId.equals(userId);
 	}
-	
+
+	/*
+	 * QnA 게시물업데이트.
+	 *
+	 * @param updateQuestion : 업데이트 될 게시물 내용.
+	 */
 	public void update(Question updateQuestion) throws PasswordMismatchException {
 		if (!matchid(updateQuestion.getUserId())) {
 			throw new PasswordMismatchException();
@@ -94,10 +102,7 @@ public class Question {
 	@Override
 	public int hashCode() {
 		final int prime = 41;
-		int result = 1;
-		result = prime * result + ((tag == null) ? 0 : tag.hashCode());
-		result = prime * result + ((updatedates == null) ? 0 : updatedates.hashCode());
-		result = prime * result + ((insertdates == null) ? 0 : insertdates.hashCode());
+		int result = 1;  
 		result = prime * result + ((contents == null) ? 0 : contents.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());

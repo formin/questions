@@ -47,15 +47,20 @@
 		              <c:choose>
 		              <c:when test="${Question.userId == loginUser.userId}">
 		
-						<form id="question" class="form-write" action="/questions/questionupdateform" method="POST"> 
 							<div class="control-group">
 								<div class="controls">
+						<form id="question" class="form-write" action="/questions/questionupdateform" method="POST"> 
 									<button type="submit" class="btn btn-primary">수정하기</button>
-								</div>
-							</div>
 							<input type="hidden" name="idx" id="idx" value="${Question.idx }">
 						</form>
-						             
+						     
+						<form id="question" class="form-write" action="/questions/questiondelete" method="POST">  
+									<button type="submit" class="btn btn-primary">삭제하기</button> 
+							<input type="hidden" name="idx" id="idx" value="${Question.idx }">
+						</form>
+								</div>
+							</div>
+						        
 		              </c:when>
 		              <c:otherwise>
 		              		<div class="control-group">
