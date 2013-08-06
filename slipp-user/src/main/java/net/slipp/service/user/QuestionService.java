@@ -5,23 +5,51 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;  
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
+
+import net.slipp.dao.user.AnswerDao;
+import net.slipp.dao.user.AnswerDaoFactory;
 import net.slipp.dao.user.QuestionDao;   
+import net.slipp.dao.user.QuestionDaoFactory;  
+import net.slipp.domain.user.Answer;
 import net.slipp.domain.user.Question;  
+import net.slipp.domain.user.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service; 
 
+@Service 
 public class QuestionService {
 
 	private static Logger log = LoggerFactory.getLogger(UserService.class);
+	
+	@Resource(name = "memoryQuestionDao")
+	private QuestionDao questionDao;
 
+	@Resource(name = "memoryAnswerDao")
+	private AnswerDao answerDao;
+	
+	@PostConstruct
+	public void initialize() {
+		log.debug("initialize");
+	}
+	
+	@PreDestroy
+	public void destroy() {
+		log.debug("destroy");
+	}	
+	
 	/*
 	 * QnA 게시물입력.
 	 * 
 	 * @param question : 입력 게시물.
 	 */
 	public Question insert(Question question) throws SQLException, ExistedUserException {
-		QuestionDao questionDao = new QuestionDao();
+		 
+		QuestionDao questionDao = QuestionDaoFactory.create();
 		
 		Calendar calendar = Calendar.getInstance();
 		java.util.Date date = calendar.getTime();
@@ -44,7 +72,8 @@ public class QuestionService {
 	 * @param question : 입력 게시물.
 	 */
 	public Integer maxIdx() throws SQLException {
-		QuestionDao questionDao = new QuestionDao(); 
+		 
+		QuestionDao questionDao = QuestionDaoFactory.create();
 		return questionDao.maxIdx();
 	}
 
@@ -54,7 +83,8 @@ public class QuestionService {
 	 * @param Idx : 게시물번호.
 	 */
 	public Question findByIdx(Integer Idx) throws SQLException {
-		QuestionDao questionDao = new QuestionDao();
+		 
+		QuestionDao questionDao = QuestionDaoFactory.create();
 		return questionDao.findByIdx(Idx);
 	}
 
@@ -91,8 +121,8 @@ public class QuestionService {
 		if (question == null) {
 			throw new NullPointerException(Idx + " Idx doesn't existed.");
 		}
-		
-		QuestionDao questionDao = new QuestionDao();
+		 
+		QuestionDao questionDao = QuestionDaoFactory.create();
 		questionDao.delete(Idx);
 		 
 	}
@@ -100,17 +130,42 @@ public class QuestionService {
 	/*
 	 * 게시판 목록
 	 */
-	public ArrayList<Question> getArticleList() {
-		QuestionDao questionDao = new QuestionDao();  
+	public ArrayList<Question> getArticleList() throws SQLException {
+		 
+		QuestionDao questionDao = QuestionDaoFactory.create();
 		return questionDao.getArticleList();
 	}
 
 	/*
 	 * 게시판 보기.
 	 */
-	public Question view(int idx) {
-		QuestionDao questionDao = new QuestionDao();  
+	public Question view(int idx) throws SQLException, PasswordMismatchException {
+		 
+		QuestionDao questionDao = QuestionDaoFactory.create(); 
 		return questionDao.view(idx);
 	}
-	
+
+	public void createAnswer(User user, Integer questionId, Answer answer) throws SQLException {
+
+		AnswerDao answerDao = AnswerDaoFactory.create();
+		QuestionDao questionDao = QuestionDaoFactory.create();
+		
+		@SuppressWarnings("unused")
+		Question question = null;
+		try {
+			question = questionDao.findByIdx(questionId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		answer.setUserId(user.getUserId());
+		answer.setQnaidx(questionId);
+		
+		//answer.answerTo(question);
+		//final Answer savedAnswer = questionDao.save(answer);
+		answerDao.add(answer);
+		
+	}
+
 }

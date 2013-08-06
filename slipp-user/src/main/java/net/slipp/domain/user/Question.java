@@ -1,5 +1,6 @@
 package net.slipp.domain.user; 
- 
+  
+
 import net.slipp.service.user.PasswordMismatchException;
 
 /*
@@ -98,7 +99,11 @@ public class Question {
 		this.contents = updateQuestion.contents; 
 		this.updatedates = updateQuestion.updatedates; 
 	}
-	
+
+    public void newAnswered(Answer answer) {
+       
+    }
+    
 	@Override
 	public int hashCode() {
 		final int prime = 41;

@@ -11,7 +11,8 @@ public class UserDaoTest {
 	@Test
 	public void crud() throws Exception {
 		User expected = new User("userId", "password", "name", "javajigi@email.com");
-		UserDao userDao = new UserDao();
+		//UserDao userDao = new UserDao();
+		MemoryUserDao userDao = new MemoryUserDao();
 		userDao.insert(expected);
 
 		User actual = userDao.findByUserId(expected.getUserId());

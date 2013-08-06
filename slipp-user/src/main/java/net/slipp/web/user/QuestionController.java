@@ -1,12 +1,17 @@
 package net.slipp.web.user; 
   
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpSession;
 
 import net.slipp.domain.user.Question; 
 import net.slipp.domain.user.User;
+import net.slipp.service.user.AnswerService;
 import net.slipp.service.user.PasswordMismatchException;
 import net.slipp.service.user.QuestionService; 
-  
+   
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +25,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/questions")
 public class QuestionController {
-  
-	private QuestionService questionService = new QuestionService();
+
+	@Autowired
+	private QuestionService questionService;
+
+	@Autowired
+	private AnswerService answerService;
 	
 	/*
 	 * QnA 게시물보기.
@@ -29,9 +38,11 @@ public class QuestionController {
 	 * @param idx : 게시물번호. 
 	 */
 	@RequestMapping("{idx}")
-	public String show(@PathVariable int idx, Model model) { 
+	public String show(@PathVariable int idx, Model model) throws SQLException, PasswordMismatchException { 
 
-		model.addAttribute("Question", questionService.view(idx));  		
+		model.addAttribute("Question", questionService.view(idx));  
+		model.addAttribute("Answer", answerService.view(idx));  
+		model.addAttribute("list", answerService.getArticleList(idx));		
 		return "question/view"; 
 	}
 

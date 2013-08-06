@@ -26,7 +26,8 @@ public class QuestionDaoTest {
         question.setUserId("test");
         question.setInsertdates(today);
 
-		QuestionDao questionDao = new QuestionDao(); 
+		//QuestionDao questionDao = new QuestionDao(); 
+		QuestionDao questionDao = QuestionDaoFactory.create();
 		questionDao.insert(question);
 		 
         Question actual = questionDao.findByIdx(0);
