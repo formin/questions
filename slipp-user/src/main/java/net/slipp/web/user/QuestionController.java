@@ -11,6 +11,8 @@ import net.slipp.service.user.PasswordMismatchException;
 import net.slipp.service.user.QuestionService; 
    
 
+import net.slipp.service.user.TagService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,9 @@ public class QuestionController {
 
 	@Autowired
 	private AnswerService answerService;
+
+	@Autowired
+	private TagService tagService;
 	
 	/*
 	 * QnA 게시물보기.
@@ -42,7 +47,8 @@ public class QuestionController {
 
 		model.addAttribute("Question", questionService.view(idx));  
 		model.addAttribute("Answer", answerService.view(idx));  
-		model.addAttribute("list", answerService.getArticleList(idx));		
+		model.addAttribute("list", answerService.getArticleList(idx));	
+		model.addAttribute("taglist", tagService.getArticleList(idx));		
 		return "question/view"; 
 	}
 
@@ -59,6 +65,7 @@ public class QuestionController {
 		if (user == null)
 		{
 			model.addAttribute("list", questionService.getArticleList());
+			model.addAttribute("taglist", tagService.getList());
 			return "question/list";
 		}
  
@@ -73,10 +80,13 @@ public class QuestionController {
 	 * @param question : 게시물.
 	 */
 	@RequestMapping(value = "/{userId}/questioninsert", method = RequestMethod.POST)
-	public String questioninsert(@PathVariable String userId, Question question, Model model) throws Exception {   
-		questionService.insert(question);
+	public String questioninsert(@PathVariable String userId, String plainTags, Question question, Model model) throws Exception { 
 		 
+		questionService.insert(question);
+		
 		model.addAttribute("list", questionService.getArticleList());
+		model.addAttribute("taglist", tagService.getList());
+		model.addAttribute("taglistCnt", tagService.getTagList());
 		return "question/list"; 
 	} 
 
@@ -87,6 +97,8 @@ public class QuestionController {
 	@RequestMapping(value = "/list")
 	public String list(Model model) throws Exception {   
 		model.addAttribute("list", questionService.getArticleList());
+		model.addAttribute("taglist", tagService.getList());
+		model.addAttribute("taglistCnt", tagService.getTagList());
 		return "question/list"; 
 	} 
 
@@ -104,6 +116,7 @@ public class QuestionController {
 		if (user == null)
 		{
 			model.addAttribute("list", questionService.getArticleList());
+			model.addAttribute("taglist", tagService.getList());
 			return "question/list";
 		}
 		
@@ -148,6 +161,7 @@ public class QuestionController {
 			if (user == null)
 			{
 				model.addAttribute("list", questionService.getArticleList());
+				model.addAttribute("taglist", tagService.getList());
 				return "question/list";
 			}
 			

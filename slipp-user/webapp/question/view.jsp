@@ -153,6 +153,39 @@
 					
 				</div> 
 		  
+		  
+		  
+					  
+					  
+				<div class="content-sub">
+					<div class="floating">
+						 
+						<section class="qna-tags">
+							<h1>연관태그</h1>
+							<ul>
+											
+								<c:if test="${empty taglist}"> 
+								<li>
+									<a href="/questions/tagged/tdd" class="tag">등록 된 태그가 없습니다.</a>
+								</li> 
+								</c:if>
+								
+												
+								<!--  반복 구간 시작 -->
+								<c:forEach var="taglist" items="${taglist }" varStatus="status"> 
+								<li>
+									<a href="/questions/tagged/tdd" class="tag">${taglist }</a>
+								</li> 
+								</c:forEach>
+								<!--  반복 구간 끝 -->
+								
+							</ul>
+						</section> 
+					</div>
+				</div>
+				
+				
+				
 			</section>
 
 		</div>

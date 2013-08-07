@@ -8,7 +8,7 @@ import net.slipp.domain.user.Question;
  
 public interface QuestionDao {
 
-	void insert(Question question) throws SQLException;
+	Integer insert(Question question) throws SQLException;
 	Integer maxIdx() throws SQLException;
 	ArrayList<Question> getArticleList() throws SQLException;
 	Question view(Integer idx) throws SQLException;

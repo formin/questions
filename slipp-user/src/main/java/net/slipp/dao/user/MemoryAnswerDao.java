@@ -14,17 +14,7 @@ import org.springframework.stereotype.Repository;
 public class MemoryAnswerDao implements AnswerDao { 
 	
 	private static Set<Answer> set = new HashSet<Answer>();  
-
-/*	
-    public MemoryAnswerDao(Set<Answer> set) {
-         this.set = set;
-    }
-
-    public MemoryAnswerDao() {
-         set = new HashSet<Answer>();         
-    }
-*/
-
+ 
     public void add(Answer answer) {
     	 answer.setIdx( set.size()+1 );
          set.add(answer);                                   

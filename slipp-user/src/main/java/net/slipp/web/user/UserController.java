@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import net.slipp.domain.user.User;
 import net.slipp.service.user.PasswordMismatchException;
 import net.slipp.service.user.QuestionService;
+import net.slipp.service.user.TagService;
 import net.slipp.service.user.UserService;
 
 import org.slf4j.Logger;
@@ -26,7 +27,10 @@ public class UserController {
 	
 	@Autowired
 	private QuestionService questionService;
-	 
+
+	@Autowired
+	private TagService tagService;
+	
 	@RequestMapping("/form")
 	public String joinForm(Model model) throws Exception {
 		model.addAttribute("user", new User());
@@ -51,6 +55,8 @@ public class UserController {
 			User user = userService.login(userId, password);
 			session.setAttribute("loginUser", user);
 			model.addAttribute("list", questionService.getArticleList());
+			model.addAttribute("taglist", tagService.getList());
+			model.addAttribute("taglistCnt", tagService.getTagList());
 			return "question/list"; 
 		} catch (PasswordMismatchException e) {
 			return "user/login";

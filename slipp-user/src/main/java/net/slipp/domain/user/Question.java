@@ -15,17 +15,19 @@ public class Question {
 	private String contents; 	//	본문.
 	private String insertdates; //	입력날짜.
 	private String updatedates; //	수정날짜.
-	
+	private String plaintags;	//	tag
+	 
 	public Question() { 
 	}
 
-	public Question(Integer idx, String userId, String title, String contents, String insertdates, String updatedates) {
+	public Question(Integer idx, String userId, String title, String contents, String insertdates, String updatedates, String plainTags) {
 		this.idx = idx;
 		this.userId = userId;
 		this.title = title;
 		this.contents = contents;
 		this.insertdates = insertdates;
 		this.updatedates = updatedates; 
+		this.plaintags = plainTags;
 	}
  
 
@@ -43,6 +45,14 @@ public class Question {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getPlaintags() {
+		return plaintags;
+	}
+
+	public void setPlaintags(String plainTags) {
+		this.plaintags = plainTags;
 	}
 
 	public String getTitle() {
@@ -98,11 +108,9 @@ public class Question {
 		this.title = updateQuestion.title;
 		this.contents = updateQuestion.contents; 
 		this.updatedates = updateQuestion.updatedates; 
+		this.plaintags = updateQuestion.plaintags;
 	}
-
-    public void newAnswered(Answer answer) {
-       
-    }
+ 
     
 	@Override
 	public int hashCode() {
@@ -111,6 +119,7 @@ public class Question {
 		result = prime * result + ((contents == null) ? 0 : contents.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		result = prime * result + ((plaintags == null) ? 0 : plaintags.hashCode());
 		result = prime * result + ((idx == null) ? 0 : idx.hashCode());
 		return result;
 	} 
@@ -144,6 +153,6 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [userId=" + userId + ", insertdates=" + insertdates + ", updatedates=" + updatedates + ", title=" + title + ", contents=" + contents + ", idx=" + idx + "]";
+		return "Question [userId=" + userId + ", insertdates=" + insertdates + ", updatedates=" + updatedates + ", title=" + title + ", contents=" + contents + ", plaintags=" + plaintags + ", idx=" + idx + "]";
 	}
 }

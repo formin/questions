@@ -21,8 +21,10 @@ public class MemoryQuestionDao implements QuestionDao{
 	 * 
 	 * @param question : 입력 게시물.
 	 */
-	public void insert(Question question) throws SQLException { 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Integer insert(Question question) throws SQLException { 
 		questions.put(question.getIdx(), question);
+        return ( ( (Integer) new TreeSet(questions.keySet()).last() ) );  
 	}
 
 	/*
@@ -39,7 +41,8 @@ public class MemoryQuestionDao implements QuestionDao{
          
         return ( ( (Integer) new TreeSet(questions.keySet()).last() ) + 1 );  
 	}
-
+ 
+	
 	/*
 	 * 게시판 목록
 	 */ 

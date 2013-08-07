@@ -6,8 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import net.slipp.dao.user.UserDao;
-import net.slipp.dao.user.UserDaoFactory;
+import net.slipp.dao.user.UserDao; 
 import net.slipp.domain.user.User;
 
 import org.slf4j.Logger;
@@ -38,9 +37,7 @@ public class UserService {
 	
 	public User join(User user) throws SQLException, ExistedUserException {
 		log.debug("User : {}", user);
-		 
-		UserDao userDao = UserDaoFactory.create();
-		
+		  
 		User existedUser = userDao.findByUserId(user.getUserId());
 		if (existedUser != null) {
 			throw new ExistedUserException(user.getUserId());
@@ -51,8 +48,7 @@ public class UserService {
 	}
 
 	public User login(String userId, String password) throws SQLException, PasswordMismatchException {
-		 
-		UserDao userDao = UserDaoFactory.create();
+		  
 		User user = userDao.findByUserId(userId);
 		if (user == null) {
 			throw new PasswordMismatchException();
@@ -66,8 +62,7 @@ public class UserService {
 	}
 
 	public User findByUserId(String userId) throws SQLException {
-		 
-		UserDao userDao = UserDaoFactory.create();
+		  
 		return userDao.findByUserId(userId);
 	}
 

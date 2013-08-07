@@ -6,12 +6,17 @@ import static org.junit.Assert.assertThat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.annotation.Resource;
+
 import net.slipp.domain.user.Question; 
 
 import org.junit.Test;
 
 public class QuestionDaoTest {
 
+	@Resource(name = "memoryQuestionDao")
+	private QuestionDao questionDao;
+	
 	@Test
 	public void crud() throws Exception {
 		 
@@ -25,9 +30,7 @@ public class QuestionDaoTest {
         question.setContents("test");
         question.setUserId("test");
         question.setInsertdates(today);
-
-		//QuestionDao questionDao = new QuestionDao(); 
-		QuestionDao questionDao = QuestionDaoFactory.create();
+ 
 		questionDao.insert(question);
 		 
         Question actual = questionDao.findByIdx(0);

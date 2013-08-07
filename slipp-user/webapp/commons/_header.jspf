@@ -2,7 +2,8 @@
 <link href="/stylesheets/bootstrap.css" rel="stylesheet">
 <link href="/stylesheets/bootstrap-responsive.css" rel="stylesheet">
 <link href="/stylesheets/docs.css" rel="stylesheet">
-<link href="/stylesheets/main.css" rel="stylesheet">
+<link href="http://www.slipp.net/resources/stylesheets/slipp.css" rel="stylesheet"> 
+<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 <style>
   body {
     padding-top: 40px;

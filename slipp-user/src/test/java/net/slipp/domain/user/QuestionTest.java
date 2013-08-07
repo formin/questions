@@ -28,7 +28,7 @@ public class QuestionTest {
         question.setUserId("test");
         question.setInsertdates(today);
         
-        Question updatequestion = new Question(0, "test", "test1", "test1", "", today); 
+        Question updatequestion = new Question(0, "test", "test1", "test1", "", today, ""); 
         try {
 			question.update(updatequestion);
 		} catch (PasswordMismatchException e) { 

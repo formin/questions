@@ -4,22 +4,26 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;  
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import net.slipp.dao.user.AnswerDao;
-import net.slipp.dao.user.AnswerDaoFactory;
-import net.slipp.dao.user.QuestionDao;   
-import net.slipp.dao.user.QuestionDaoFactory;  
+import net.slipp.dao.user.AnswerDao; 
+import net.slipp.dao.user.QuestionDao;    
+import net.slipp.dao.user.TagDao;
 import net.slipp.domain.user.Answer;
 import net.slipp.domain.user.Question;  
+import net.slipp.domain.user.Tag;
 import net.slipp.domain.user.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service; 
+ 
 
 @Service 
 public class QuestionService {
@@ -31,6 +35,9 @@ public class QuestionService {
 
 	@Resource(name = "memoryAnswerDao")
 	private AnswerDao answerDao;
+
+	@Resource(name = "memoryTagDao")
+	private TagDao tagDao;
 	
 	@PostConstruct
 	public void initialize() {
@@ -48,9 +55,7 @@ public class QuestionService {
 	 * @param question : 입력 게시물.
 	 */
 	public Question insert(Question question) throws SQLException, ExistedUserException {
-		 
-		QuestionDao questionDao = QuestionDaoFactory.create();
-		
+		  
 		Calendar calendar = Calendar.getInstance();
 		java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date)); 
@@ -60,20 +65,44 @@ public class QuestionService {
 		int maxIdx = questionDao.maxIdx();
 		question.setIdx(maxIdx);
 		
-		questionDao.insert(question);
+		int Idx = questionDao.insert(question); 
 		
-		log.debug("Question : {}", question);
+		Set<String> parsedTags = parseTags(question.getPlaintags());
+         
+        for (String each : parsedTags) {
+ 
+    		Tag tag = new Tag();
+    		tag.setQnaidx(Idx);
+    		tag.setInsertdates(today);
+    		tag.setUserId(question.getUserId());
+    		tag.setContents(each);
+    		
+    		tagDao.add(tag);
+    		
+    		log.debug("tag : {}", tag);
+    		
+        }
+        
 		return question;
 	}
-
+	
+	
+	static Set<String> parseTags(String plainTags) {
+        Set<String> parsedTags = new HashSet<String>();   
+        StringTokenizer tokenizer = new StringTokenizer(plainTags, " |,");
+        while (tokenizer.hasMoreTokens()) {
+            parsedTags.add(tokenizer.nextToken());
+        }
+        return parsedTags;
+    }
+	
 	/*
 	 * QnA 게시물번호 최대값 조회.
 	 * 
 	 * @param question : 입력 게시물.
 	 */
 	public Integer maxIdx() throws SQLException {
-		 
-		QuestionDao questionDao = QuestionDaoFactory.create();
+		  
 		return questionDao.maxIdx();
 	}
 
@@ -83,8 +112,7 @@ public class QuestionService {
 	 * @param Idx : 게시물번호.
 	 */
 	public Question findByIdx(Integer Idx) throws SQLException {
-		 
-		QuestionDao questionDao = QuestionDaoFactory.create();
+		  
 		return questionDao.findByIdx(Idx);
 	}
 
@@ -107,7 +135,27 @@ public class QuestionService {
 			throw new NullPointerException(Idx + " Idx doesn't existed.");
 		}
 		question.update(updateQuestion);
-		 
+ 
+		Set<String> parsedTags = parseTags(question.getPlaintags());
+
+		Tag deltag = new Tag();
+		deltag.setQnaidx(Idx); 
+		
+		tagDao.del(deltag);
+		
+        for (String each : parsedTags) {
+ 
+    		Tag tag = new Tag();
+    		tag.setQnaidx(Idx);
+    		tag.setInsertdates(today);
+    		tag.setUserId(question.getUserId());
+    		tag.setContents(each);
+    		
+    		tagDao.add(tag);
+    		
+    		log.debug("tag : {}", tag);
+    		
+        }
 	}
 
 	/*
@@ -121,18 +169,23 @@ public class QuestionService {
 		if (question == null) {
 			throw new NullPointerException(Idx + " Idx doesn't existed.");
 		}
-		 
-		QuestionDao questionDao = QuestionDaoFactory.create();
+		  
 		questionDao.delete(Idx);
-		 
+
+		Tag tag = new Tag();
+		tag.setQnaidx(Idx); 
+		
+		tagDao.del(tag);
+		
+		log.debug("tag : {}", tag);
+		
 	}
 	
 	/*
 	 * 게시판 목록
 	 */
 	public ArrayList<Question> getArticleList() throws SQLException {
-		 
-		QuestionDao questionDao = QuestionDaoFactory.create();
+		  
 		return questionDao.getArticleList();
 	}
 
@@ -140,30 +193,23 @@ public class QuestionService {
 	 * 게시판 보기.
 	 */
 	public Question view(int idx) throws SQLException, PasswordMismatchException {
-		 
-		QuestionDao questionDao = QuestionDaoFactory.create(); 
+		  
 		return questionDao.view(idx);
 	}
 
 	public void createAnswer(User user, Integer questionId, Answer answer) throws SQLException {
-
-		AnswerDao answerDao = AnswerDaoFactory.create();
-		QuestionDao questionDao = QuestionDaoFactory.create();
-		
+  
 		@SuppressWarnings("unused")
 		Question question = null;
 		try {
 			question = questionDao.findByIdx(questionId);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) { 
 			e.printStackTrace();
 		}
 		
 		answer.setUserId(user.getUserId());
 		answer.setQnaidx(questionId);
-		
-		//answer.answerTo(question);
-		//final Answer savedAnswer = questionDao.save(answer);
+		 
 		answerDao.add(answer);
 		
 	}

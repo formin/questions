@@ -8,8 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import net.slipp.dao.user.AnswerDao; 
-import net.slipp.dao.user.AnswerDaoFactory; 
+import net.slipp.dao.user.AnswerDao;  
 import net.slipp.domain.user.Answer; 
 
 import org.slf4j.Logger;
@@ -39,14 +38,12 @@ public class AnswerService {
 	}	
 
 	public HashSet<?> view(int idx) throws SQLException, PasswordMismatchException {
-		 
-		AnswerDao answerDao = AnswerDaoFactory.create(); 
+		  
 		return (HashSet<?>) answerDao.getAnswerByIdx(idx);
 	}
 
 	public ArrayList<Answer> getArticleList(int idx) throws SQLException {
-
-		AnswerDao answerDao = AnswerDaoFactory.create(); 
+ 
 		return answerDao.getArticleList(idx);
 	}
  
