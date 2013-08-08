@@ -1,164 +1,152 @@
 package net.slipp.dao.user;
  
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.ArrayList; 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.Iterator; 
 import java.util.Set;
 
-import net.slipp.domain.user.Tag;
-import net.slipp.service.user.UserService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.slipp.domain.user.Tag; 
+ 
 import org.springframework.stereotype.Repository;
 
 @Repository("memoryTagDao")
 public class MemoryTagDao implements TagDao {
-
-	private static Logger log = LoggerFactory.getLogger(UserService.class);
-	
+ 
 	private static Set<Tag> tagcnt = new HashSet<Tag>();   // 태그 카운트를 위한 set
 	private static Set<Tag> taglist = new HashSet<Tag>();  // 연관 태크를 위한 set 
  
-    public void add(Tag tag) {
 
-    	 tag.setIdx( tagcnt.size()+1 );
-
-         tag.setCount(1);
- 
-         
-         // 태그 카운트 set START ==>
-         // 태크에 중복 된 내용을 카운트 후 삭제.
-         for(Iterator<Tag> it = tagcnt.iterator(); it.hasNext();) {
-       	  		
-         	Tag tagCnt = (Tag)it.next();
-                   
-       	  if (tagCnt.getContents().equals(tag.getContents())){
-              try{
-            	  
-            	  if (!tagCnt.getQnaidx().equals(tag.getQnaidx()))
-            		  tag.setCount(tagCnt.getCount()+1);  
-	              
-            	  tagcnt.remove(tagCnt);
-	              break;
-              }catch(Exception e){ 
-          		log.debug("알수 없는 예외입니다.");
-              }
-       	  }
-       	  		
-         }
-
-         // 태그 업데이트의 경우는 위에 내용으로 카운트가 불가능 하므로.
-         // 태크에 중복 된 게시물 번호 카운트 후 삭제.
-         for(Iterator<Tag> it = tagcnt.iterator(); it.hasNext();) {
-       	  		
-         	Tag tagCntSet = (Tag)it.next();
-                   
-       	  if (tagCntSet.getQnaidx().equals(tag.getQnaidx()) && tagCntSet.getContents().equals(tag.getContents())){
-              try{
-	              //tag.setCount(tagCntSet.getCount()+1);  
-            	  //업데이트의 경우 태그 카운트를 하지 않는다.
-	              tagcnt.remove(tagCntSet);
-	              break;
-              }catch(Exception e){ 
-          		log.debug("알수 없는 예외입니다.");
-              }
-       	  }
-       	  		
-         }
-         
-         tagcnt.add(tag);  
-         // 태그 카운트 set END ==>
-
-         // 연관 태그 set START ==>
-         // 태크에 중복 된 내용을 카운트 후 삭제.
-         for(Iterator<Tag> it = taglist.iterator(); it.hasNext();) {
-       	  		
-         	Tag tagCnt = (Tag)it.next();
-                   
-       	  if (tagCnt.getContents().equals(tag.getContents())){
-              try{
-            	  
-            	  if(!tagCnt.getQnaidx().equals(tag.getQnaidx()))
-            		  tag.setCount(tagCnt.getCount()+1);  
-            	  
-	              taglist.remove(tagCnt);
-	              break;
-              }catch(Exception e){ 
-          		log.debug("알수 없는 예외입니다.");
-              }
-       	  }
-       	  		
-         }
-
-         // 태그 업데이트의 경우는 위에 내용으로 카운트가 불가능 하므로.
-         // 태크에 중복 된 게시물 번호 카운트 후 삭제.
-         for(Iterator<Tag> it = taglist.iterator(); it.hasNext();) {
-       	  		
-         	Tag tagListSet = (Tag)it.next();
-                   
-       	  if (tagListSet.getQnaidx().equals(tag.getQnaidx()) && tagListSet.getContents().equals(tag.getContents())){
-              try{
-	              //tag.setCount(tagListSet.getCount()+1);   
-            	  //업데이트의 경우 태그 카운트를 하지 않는다. 
-	              taglist.remove(tagListSet);
-	              break;
-              }catch(Exception e){ 
-          		log.debug("알수 없는 예외입니다.");
-              }
-       	  }
-       	  		
-         }
-
-         taglist.add(tag);
-         // 연관 태그 set END ==>
-         
- 
-    }
-
-    public void del(Tag tag){
- 
-    	Set<Tag> removeTagcnt = new HashSet<Tag>();  
-    	Set<Tag> removeTaglist = new HashSet<Tag>();  
-    	
-        // 태그 카운트 set START ==> 
-        // 태크에 중복 된 게시물 번호 카운트 후 삭제.
+    // 태그 내용에 대한 카운트 증감 처리 - 리스트페이지의 전체 태그.	
+    public void listTagAdd(Tag tag){
+    	   
+        // 태그 카운트 set  
         for(Iterator<Tag> it = tagcnt.iterator(); it.hasNext();) {
       	  		
-        	Tag tagCntSet = (Tag)it.next();
-                  
-      	  if (tagCntSet.getQnaidx().equals(tag.getQnaidx())){
-             try{  
-            	 removeTagcnt.add(tagCntSet);
-             }catch(Exception e){ 
-         		log.debug("알수 없는 예외입니다.");
-             }
-      	  }
-      	  		
-        } 
-        tagcnt.removeAll(removeTagcnt); 
-        // 태그 카운트 set END ==>
+        	Tag tmpTagCnt = (Tag)it.next();
+	          
+        	// 기존에 기록 된 태그 내용이 있는지 검사.
+	       	if (tmpTagCnt.getContents().equals(tag.getContents())){
+	         
+	   			  // 태그 내용이 동일한 경우라도 기존 게시물에서 수정하는 경우는 카운트 증가 제외.
+	        	  if (!tmpTagCnt.getQnaidx().equals(tag.getQnaidx()))
+	        		  tag.setCount(tmpTagCnt.getCount()+1);  
+	              
+	        	  // 태그 카운트는 기존 기록 된 태그 내용이 존재하는 경우 앞서 태그를 지우고 이후 태그에 카운트를 합산한다.
+	        	  tagcnt.remove(tmpTagCnt); 
+	              
+	        	  break;
+	               
+	       	  }
 
-        // 연관 태그 set START ==> 
+        }
+
+	    tagcnt.add(tag);  	     
+	     
+    }
+
+    // 태그 내용에 대한 카운트 증감 처리 - 내용보기페이지의 연관 태그.	
+    public void viewTagAdd(Tag tag){
+
+        // 연관 태그 set  
+        for(Iterator<Tag> it = taglist.iterator(); it.hasNext();) {
+      	  		
+        	Tag tmpTagList = (Tag)it.next();
+
+        	// 기존에 기록 된 태그 내용이 있는지 검사.           
+	       	if (tmpTagList.getContents().equals(tag.getContents())){
+      		 
+      			  // 태그 내용이 동일한 경우라도 기존 게시물에서 수정하는 경우는 카운트 증가 제외.
+           	  if(!tmpTagList.getQnaidx().equals(tag.getQnaidx()))
+           		  tag.setCount(tmpTagList.getCount()+1);  
+
+           	  // 기존 게시물의 태그 내용과 동일한 경우 뒤에 게시물이 내용을 추가하더라도 기존 태그를 지우지 않음.
+           	  if (tmpTagList.getQnaidx().equals(tag.getQnaidx()))
+           		  taglist.remove(tmpTagList);
+	              
+	              break;
+		              
+	       	  }
+      	  		
+        }
+
+        taglist.add(tag);
+    }
+    
+    public void add(Tag tag) {
+
+    	 // 현재 기록 될 태그의 유일키번호 할당.
+    	 tag.setIdx( tagcnt.size()+1 );
+
+    	 // 현재 기록 될 태크의 카운트 값 할당.
+         tag.setCount(1);
+         
+         // 태그 내용에 대한 카운트 증감 처리 - 리스트페이지의 전체 태그.			
+         listTagAdd(tag);
+         
+         // 태그 내용에 대한 카운트 증감 처리 - 내용보기페이지의 연관 태그.
+         viewTagAdd(tag);
+         
+    }
+
+    // 태그 내용에 대한 카운트 차감 처리.	
+    public void chkTagDel(Tag tmpTagList){
+
+    	Set<Tag> removeTagcnt = new HashSet<Tag>();  
+
+        for(Iterator<Tag> itcnt = tagcnt.iterator(); itcnt.hasNext();) {
+      	  		
+        	Tag tmpTagCnt = (Tag)itcnt.next();
+                     
+        	  // 해당 게시물의 삭제 태그.	
+          	  if (tmpTagCnt.getContents().equals(tmpTagList.getContents())){
+                 
+            	 //삭제 된 태그 카운트 차감.
+            	 tmpTagCnt.setCount(tmpTagCnt.getCount() - 1);
+            	 
+            	 // 차감 된 태그가 0 이면 태그를 삭제.
+            	 if(tmpTagCnt.getCount() <= 0){
+                	 removeTagcnt.add(tmpTagCnt); 
+                     tagcnt.removeAll(removeTagcnt); 
+                     break;
+            	 }
+            
+            	 // 차감 된 태그 카운트 반영.
+            	 removeTagcnt.add(tmpTagCnt); 
+                tagcnt.removeAll(removeTagcnt); 
+                tagcnt.addAll(removeTagcnt);
+                 
+                break;
+        		  
+          	  }
+      	  		
+        }
+        
+    }
+    
+    public void del(Tag tag){
+  
+    	Set<Tag> removeTaglist = new HashSet<Tag>();  
+    	   
         // 태크에 중복 된 게시물 번호 카운트 후 삭제.
         for(Iterator<Tag> it = taglist.iterator(); it.hasNext();) {
       	  		
-        	Tag tagListSet = (Tag)it.next();
-                  
-      	  if (tagListSet.getQnaidx().equals(tag.getQnaidx())){
-             try{ 
-            	 removeTaglist.add(tagListSet);
-             }catch(Exception e){ 
-         		log.debug("알수 없는 예외입니다.");
-             }
-      	  }
+        	Tag tmpTagList = (Tag)it.next();
+            
+        	// 삭제 될 게시물에 포함 태그 확인.
+      	    if (tmpTagList.getQnaidx().equals(tag.getQnaidx())){
+      		   
+      	    	 // 삭제 될 태그.
+            	 removeTaglist.add(tmpTagList);
+            	 
+            	 // 태그 내용에 대한 카운트 차감 처리.
+            	 chkTagDel(tmpTagList);
+	               
+      	    }
       	  		
         } 
-        taglist.removeAll(removeTaglist); 
-        // 연관 태그 set END ==>
+        
+        taglist.removeAll(removeTaglist);  
         
     }
  
@@ -200,6 +188,7 @@ public class MemoryTagDao implements TagDao {
 
         //1. 데이터 유형 및 개수를 설정한다.
         for(int index = 0 ; index < data.size() ; index++){
+        	
             //item이 등록되었는지 확인한다.
             //1.1 등록되지 않았을 때 처리
             if(!itemList.contains(data.get(index).getContents())){
@@ -223,7 +212,7 @@ public class MemoryTagDao implements TagDao {
         	  		
         	  Tag tag = (Tag)it.next();
                          
-                   s.add(tag);
+              s.add(tag);
         	  		
           }
           
@@ -239,158 +228,13 @@ public class MemoryTagDao implements TagDao {
       	  		
         	Tag tag = (Tag)it.next();
                        
-                 s.add(tag);
+            s.add(tag);
       	  		
         }
 
 		ArrayList<Tag> valueList = new ArrayList<Tag>(s);
-
-		//Collections.reverse(valueList);
-		
+ 
 		return valueList;
 	}
-	
-/*
-	public ArrayList<String> getArticleList(Integer Idx) { 
-
-        Set<Tag> s = new HashSet<Tag>();
-        
-        for(Iterator<Tag> it = set.iterator(); it.hasNext();) {
-      	  		
-        	Tag tag = (Tag)it.next();
-                  
-      	  if (tag.getQnaidx().equals(Idx))        
-                 s.add(tag);
-      	  		
-        }
-         
-		
-		ArrayList<Tag> data = new ArrayList<Tag>(s);
- 
-		 
-        ArrayList<String> itemList = new ArrayList<String>();
-     
-        ArrayList<Integer> cntList = new ArrayList<Integer>();
-        
-        //1. 데이터 유형 및 개수를 설정한다.
-        for(int index = 0 ; index < data.size() ; index++){
-            //item이 등록되었는지 확인한다.
-            //1.1 등록되지 않았을 때 처리
-            if(!itemList.contains(data.get(index).getContents())){
-                
-                //1.1.1 item을 itemList에 추가한다.
-                itemList.add(data.get(index).getContents());
-                
-                //1.1.2 item이 몇개 들어있는지 세어서 cntList에 추가한다.
-                int cnt = 0;
-                for(int searchIndex = index; searchIndex < data.size(); searchIndex++){
-                    if(data.get(index) == data.get(searchIndex)){
-                        cnt++;
-                    }
-                }
-                cntList.add(cnt);
-                
-                //1.1.3 cnt를 비교하여 itemList와 cntList를 높은순으로 정렬한다.
-                for(int sourceIndex = 0 ; sourceIndex < cntList.size()-1 ; sourceIndex++){
-                    for(int targetIndex = sourceIndex+1 ; targetIndex < cntList.size() ; targetIndex++){
-                        if(cntList.get(sourceIndex) < cntList.get(targetIndex)){
-                            int moveItem = 0;
-                            String strmoveItem = "";
-                            
-                            //cntList 위치 변경
-                            moveItem = cntList.get(targetIndex);
-                            cntList.set(targetIndex, cntList.get(sourceIndex));
-                            cntList.set(sourceIndex, moveItem);
-                            
-                            //itemList 위치 변경
-                            strmoveItem = itemList.get(targetIndex);
-                            itemList.set(targetIndex, itemList.get(sourceIndex));
-                            itemList.set(sourceIndex, strmoveItem);
-                            
-                        }
-                    }
-                }
-                
-            //1.2 등록되어 있을 경우 처리
-            }else{
-                continue;
-            }            
-            
-        }//end 데이터 유형 및 개수를 설정
-         
-		return itemList;
-	}
-
-	public ArrayList<String> getList() { 
-
-        Set<Tag> s = new HashSet<Tag>();
-        
-        for(Iterator<Tag> it = set.iterator(); it.hasNext();) {
-      	  		
-        	Tag tag = (Tag)it.next();
-                         
-                 s.add(tag);
-      	  		
-        }
-         
-		
-		ArrayList<Tag> data = new ArrayList<Tag>(s);
- 
-		 
-        ArrayList<String> itemList = new ArrayList<String>(); 
-        ArrayList<Integer> cntList = new ArrayList<Integer>();
-        
-        //1. 데이터 유형 및 개수를 설정한다.
-        for(int index = 0 ; index < data.size() ; index++){
-            //item이 등록되었는지 확인한다.
-            //1.1 등록되지 않았을 때 처리
-            if(!itemList.contains(data.get(index).getContents())){
-                
-                //1.1.1 item을 itemList에 추가한다.
-                itemList.add(data.get(index).getContents());
-                
-                //1.1.2 item이 몇개 들어있는지 세어서 cntList에 추가한다.
-                int cnt = 0;
-                for(int searchIndex = index; searchIndex < data.size(); searchIndex++){
-                    if(data.get(index) == data.get(searchIndex)){
-                        cnt++;
-                    }
-                }
-                cntList.add(cnt);
-                
-                //1.1.3 cnt를 비교하여 itemList와 cntList를 높은순으로 정렬한다.
-                for(int sourceIndex = 0 ; sourceIndex < cntList.size()-1 ; sourceIndex++){
-                    for(int targetIndex = sourceIndex+1 ; targetIndex < cntList.size() ; targetIndex++){
-                        if(cntList.get(sourceIndex) < cntList.get(targetIndex)){
-                            int moveItem = 0;
-                            String strmoveItem = "";
-                            
-                            //cntList 위치 변경
-                            moveItem = cntList.get(targetIndex);
-                            cntList.set(targetIndex, cntList.get(sourceIndex));
-                            cntList.set(sourceIndex, moveItem);
-                            
-                            //itemList 위치 변경
-                            strmoveItem = itemList.get(targetIndex);
-                            itemList.set(targetIndex, itemList.get(sourceIndex)+""+cntList.get(targetIndex));
-                            itemList.set(sourceIndex, strmoveItem);
-                            
-                        }
-                    }
-                }
-                
-            //1.2 등록되어 있을 경우 처리
-            }else{
-                continue;
-            }            
-            
-        }//end 데이터 유형 및 개수를 설정
-         
-         
-		return itemList;
-		
-	}
-*/
-
- 
+	  
 }

@@ -45,15 +45,15 @@
 												<strong class="subject">
 													<a href="/questions/${question.idx }">${question.title }</a>
 												</strong>
-												<!--  
 												<div class="auth-info"> 
 															<i class="icon-add-comment"></i>
-															<span class="type">응답</span>
+															<span class="type"></span>
 															<span class="time">
-																1997-01-01
+																${question.insertdates }
 															</span>
-															<a href="/users/65/fupfin" class="author">${question.userId }</a> 
+															<a href="/questions/${question.idx }" class="author">${question.userId }</a> 
 												</div>
+												<!--  
 												<div class="reply" title="댓글">
 													<i class="icon-reply"></i>
 													<span class="point">6</span>
