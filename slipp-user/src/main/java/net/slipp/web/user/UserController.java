@@ -53,8 +53,7 @@ public class UserController {
 	public String login(String userId, String password, HttpSession session, Model model) throws Exception {
 		try {
 			User user = userService.login(userId, password);
-			session.setAttribute("loginUser", user);
-			model.addAttribute("list", questionService.getArticleList());
+			session.setAttribute("loginUser", user); 
 			model.addAttribute("taglist", tagService.getList());
 			model.addAttribute("taglistCnt", tagService.getTagList());
 			return "question/list"; 

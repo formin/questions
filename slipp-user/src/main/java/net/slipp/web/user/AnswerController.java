@@ -29,8 +29,7 @@ public class AnswerController {
 		User user = (User) session.getAttribute("loginUser");
 		  
 		if (user == null)
-		{
-			model.addAttribute("list", questionService.getArticleList());
+		{ 
 			return "question/list";
 		}
 

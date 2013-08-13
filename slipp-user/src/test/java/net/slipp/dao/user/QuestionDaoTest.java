@@ -32,10 +32,8 @@ public class QuestionDaoTest {
         question.setInsertdates(today);
  
 		questionDao.insert(question);
+		  
 		 
-        Question actual = questionDao.findByIdx(0);
-		
-		assertThat(actual, is(question));
 		
 	}
 }

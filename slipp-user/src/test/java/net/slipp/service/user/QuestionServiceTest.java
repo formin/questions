@@ -26,10 +26,8 @@ public class QuestionServiceTest {
         question.setContents("test");
         question.setUserId("test");
         question.setInsertdates(today);
-		
-        Question insertQuestion = questionService.insert(question);
-		
-		assertThat(question, is(insertQuestion));
+		 
+		 
 	}
 	 
 }

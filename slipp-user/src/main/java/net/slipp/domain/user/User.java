@@ -9,10 +9,6 @@ public class User {
 	private String email;
 	
 	public User() {
-		this.userId = "";
-		this.password = "self6677";
-		this.name = "김경민";
-		this.email = "formin@sds.co.kr";
 	}
 
 	public User(String userId, String password, String name, String email) {
