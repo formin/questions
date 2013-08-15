@@ -5,8 +5,9 @@ import static org.junit.Assert.assertThat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
- 
-import net.slipp.domain.user.Question; 
+
+import net.slipp.domain.question.Question;
+import net.slipp.service.question.QuestionService;
 
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ public class QuestionServiceTest {
 	@Test
 	public void 정상적으로_글을등록한다() throws Exception {
 		 
+		@SuppressWarnings("unused")
 		QuestionService questionService = new QuestionService(); 
 		Calendar calendar = Calendar.getInstance();
 		java.util.Date date = calendar.getTime();

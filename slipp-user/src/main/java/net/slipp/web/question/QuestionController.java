@@ -1,18 +1,15 @@
-package net.slipp.web.user; 
+package net.slipp.web.question; 
   
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpSession;
 
-import net.slipp.domain.user.Question; 
+import net.slipp.domain.question.Question;
 import net.slipp.domain.user.User;
-import net.slipp.service.user.AnswerService;
+import net.slipp.service.answer.AnswerService;
+import net.slipp.service.question.QuestionService;
+import net.slipp.service.tag.TagService;
 import net.slipp.service.user.PasswordMismatchException;
-import net.slipp.service.user.QuestionService; 
-   
-
-import net.slipp.service.user.TagService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +41,10 @@ public class QuestionController {
 	 */
 	@RequestMapping("{idx}")
 	public String show(@PathVariable int idx, Model model) throws SQLException, PasswordMismatchException { 
- 
+
+		Question question = questionService.view(idx);
+		
+		model.addAttribute("qestion", question);
 		model.addAttribute("Answer", answerService.view(idx));  
 		model.addAttribute("list", answerService.getArticleList(idx));	
 		model.addAttribute("taglist", tagService.getArticleList(idx));		
@@ -63,6 +63,7 @@ public class QuestionController {
 		  
 		if (user == null)
 		{ 
+			model.addAttribute("list", questionService.getArticleList());
 			model.addAttribute("taglist", tagService.getList());
 			return "question/list";
 		}
@@ -81,7 +82,8 @@ public class QuestionController {
 	public String questioninsert(@PathVariable String userId, String plainTags, Question question, Model model) throws Exception { 
 		
 		questionService.insert(question);
-		
+
+		model.addAttribute("list", questionService.getArticleList());
 		model.addAttribute("taglist", tagService.getList());
 		model.addAttribute("taglistCnt", tagService.getTagList());
 		return "question/list"; 
@@ -93,6 +95,7 @@ public class QuestionController {
 	 */
 	@RequestMapping(value = "/list")
 	public String list(Model model) throws Exception {    
+		model.addAttribute("list", questionService.getArticleList());
 		model.addAttribute("taglist", tagService.getList());
 		model.addAttribute("taglistCnt", tagService.getTagList());
 		return "question/list"; 
@@ -112,9 +115,14 @@ public class QuestionController {
 		if (user == null)
 		{ 
 			model.addAttribute("taglist", tagService.getList());
+			model.addAttribute("list", questionService.getArticleList());
 			return "question/list";
 		}
-		 
+
+		Question question = questionService.view(idx);
+		
+		model.addAttribute("qestion", question);
+		
 		return "question/form_write";
 	}
 
@@ -125,11 +133,22 @@ public class QuestionController {
 	 * @param question : 업데이트게시물.
 	 */
 	@RequestMapping(value = "/{userId}/questionupdate", method = RequestMethod.POST)
-	public String questionupdate(Integer idx, Question question, Model model) throws Exception {  
+	public String questionupdate(Integer idx, HttpSession session, Question question, Model model) throws Exception {  
 		  
-			
-			question.setIdx(idx); 
-			return "redirect:/";
+
+		User user = (User) session.getAttribute("loginUser");
+		  
+		if (user == null)
+		{ 
+			model.addAttribute("taglist", tagService.getList());
+			model.addAttribute("list", questionService.getArticleList());
+			return "question/list";
+		}
+	 
+		question.setIdx(idx); 
+		questionService.update(idx, question);		
+		
+		return "redirect:/";
 		 
 	} 
 
@@ -148,6 +167,7 @@ public class QuestionController {
 			  
 			if (user == null)
 			{ 
+				model.addAttribute("list", questionService.getArticleList());
 				model.addAttribute("taglist", tagService.getList());
 				return "question/list";
 			}

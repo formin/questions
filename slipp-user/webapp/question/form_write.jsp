@@ -17,7 +17,7 @@
 				<div class="span6">
 			        
 			        <c:choose>
-			        <c:when test="${empty Question.title}">
+			        <c:when test="${empty qestion.title}">
 			          
 						<h1 class="write-title">새 글 작성</h1>
 					
@@ -30,25 +30,25 @@
 			        </c:choose>
 			 
 					<c:set var="forwardUrl" value="/questions/${loginUser.userId}/questioninsert" />
-					<c:if test="${not empty Question.title}">
+					<c:if test="${not empty qestion.title}">
 					<c:set var="forwardUrl" value="/questions/${loginUser.userId}/questionupdate" />
 					</c:if>
 					 
 					<form id="question" class="form-write" action="${forwardUrl}" method="POST"> 
 						<fieldset>
 							<div class="box-input-line">
-								<input id="title" name="title" class="inp-title" type="text" value="${Question.title}"/>
+								<input id="title" name="title" class="inp-title" type="text" value="${qestion.title}"/>
 							</div>
 							<div class="box-write">
-								<textarea id="contents" name="contents" rows="15" cols="80">${Question.contents}</textarea>
+								<textarea id="contents" name="contents" rows="15" cols="80">${qestion.contents}</textarea>
 							</div> 
 							<div class="box-input-line">
-								<input id="plaintags" name="plaintags" class="inp-tags" type="text" value="${Question.plaintags }" placeholder="태그 - 공백 또는 쉼표로 구분 ex) javajigi, slipp"/>
+								<input id="plaintags" name="plaintags" class="inp-tags" type="text" value="${qestion.plaintags }" placeholder="태그 - 공백 또는 쉼표로 구분 ex) javajigi, slipp"/>
 							</div>
 							<div class="submit-write"> 
 								<button type="submit" class="btn-submit"><i class="icon-submit"></i> 작성완료</button>
 							</div>
-							<input type="hidden" name="idx" id="idx" value="${Question.idx }">
+							<input type="hidden" name="idx" id="idx" value="${qestion.idx }">
 						</fieldset>
 					</form>
      

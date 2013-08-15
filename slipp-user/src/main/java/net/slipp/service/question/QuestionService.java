@@ -1,4 +1,4 @@
-package net.slipp.service.user;
+package net.slipp.service.question;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -12,14 +12,16 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import net.slipp.dao.user.AnswerDao; 
-import net.slipp.dao.user.QuestionDao;    
-import net.slipp.dao.user.TagDao;
-import net.slipp.dao.user.UserDao;
-import net.slipp.domain.user.Answer;
-import net.slipp.domain.user.Question;  
-import net.slipp.domain.user.Tag;
+import net.slipp.dao.answer.AnswerDao;
+import net.slipp.dao.question.QuestionDao;
+import net.slipp.dao.tag.TagDao;
+import net.slipp.domain.answer.Answer;
+import net.slipp.domain.question.Question;
+import net.slipp.domain.tag.Tag;
 import net.slipp.domain.user.User;
+import net.slipp.service.user.ExistedUserException;
+import net.slipp.service.user.PasswordMismatchException;
+import net.slipp.service.user.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +70,8 @@ public class QuestionService {
 		java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date)); 
          
-		question.setInsertdates(today);
- 
+		question.setInsertdates(today);  
+		question.setUpdatedates(today);  
 
 		questionDao.insert(question); 
 
@@ -107,5 +109,72 @@ public class QuestionService {
    
 		
 	}
+	
+	public ArrayList<Question> getArticleList() throws SQLException{
+		
+		return questionDao.getArticleList();
+		
+	}
 
+	public Question view(int idx) throws SQLException{
+		
+		return questionDao.view(idx);
+		
+	}
+	
+	/*
+	 * QnA 게시물번호로 게시물 조회.
+	 * 
+	 * @param Idx : 게시물번호.
+	 */
+	public Question findByIdx(Integer Idx) throws SQLException {
+
+		return questionDao.findByIdx(Idx);
+	}
+	
+	/*
+	 * QnA 게시물 업데이트.
+	 * 
+	 * @param Idx : 게시물번호.
+	 * @param updateQuestion : 갱신 할 게시물.
+	 */
+	public void update(Integer Idx, Question updateQuestion) throws SQLException, PasswordMismatchException {
+
+		Calendar calendar = Calendar.getInstance();
+		java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date)); 
+        
+        updateQuestion.setUpdatedates(today);
+         
+		Question question = findByIdx(Idx);
+		if (question == null) {
+			throw new NullPointerException(Idx + " Idx doesn't existed.");
+		}
+		
+		question.update(updateQuestion);
+		questionDao.update(question);
+ 
+		Set<String> parsedTags = parseTags(question.getPlaintags());
+
+		Tag deltag = new Tag();
+		deltag.setQnaidx(Idx); 
+
+		tagDao.del(deltag);
+
+        for (String each : parsedTags) {
+ 
+    		Tag tag = new Tag();
+    		tag.setQnaidx(Idx);
+    		tag.setInsertdates(today);
+    		tag.setUserId(question.getUserId());
+    		tag.setContents(each);
+    		
+    		tagDao.add(tag);
+    		
+    		log.debug("tag : {}", tag);
+    		
+        }
+	}
+
+	
 }

@@ -1,4 +1,4 @@
-package net.slipp.service.user;
+package net.slipp.service.answer;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,8 +8,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import net.slipp.dao.user.AnswerDao;  
-import net.slipp.domain.user.Answer; 
+import net.slipp.dao.answer.AnswerDao;
+import net.slipp.domain.answer.Answer;
+import net.slipp.service.user.PasswordMismatchException;
+import net.slipp.service.user.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

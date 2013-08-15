@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.slipp.domain.user.Answer;  
+import net.slipp.dao.answer.AnswerDao;
+import net.slipp.domain.answer.Answer;
 
 import org.springframework.stereotype.Repository;
 

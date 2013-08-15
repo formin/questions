@@ -21,17 +21,3 @@ CREATE TABLE AUDIT (
 	resource		VARCHAR(255)	NOT NULL,
 	action			VARCHAR(30)		NOT NULL
 );
-
-DROP TABLE IF EXISTS QNA;
-
-CREATE TABLE QNA ( 
-	idx          	INTEGER 		NOT NULL 	IDENTITY 	PRIMARY KEY,
-	userId			VARCHAR(12)		NOT NULL,
-	title			VARCHAR(20)		NOT NULL,
-	contents		VARCHAR(255),	
-	insertdates		DATE,		
-	updatedates		DATE,			
-	plaintags		DATE,
-  	
-	PRIMARY KEY               (idx)
-);

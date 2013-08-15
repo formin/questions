@@ -1,8 +1,8 @@
-package net.slipp.domain.user; 
+package net.slipp.domain.question; 
   
 
 import net.slipp.service.user.PasswordMismatchException;
-
+ 
 /*
  * @class Question
  * @brief QnA 게시물클래스.

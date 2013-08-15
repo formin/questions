@@ -6,8 +6,9 @@ import java.util.HashSet;
 import java.util.Iterator; 
 import java.util.Set;
 
-import net.slipp.domain.user.Tag; 
- 
+import net.slipp.dao.tag.TagDao;
+import net.slipp.domain.tag.Tag;
+
 import org.springframework.stereotype.Repository;
 
 @Repository("memoryTagDao")

@@ -26,38 +26,38 @@
 			 
 			<section class="view-content">
 
-				<h1 class="article-title">${Question.title }</h1>
+				<h1 class="article-title">${qestion.title }</h1>
 				<div class="content-main">
 					 
 				<article class="article">
 						<div class="article-header"> 
 							<div class="article-header-text">
-								<a href="/questions/${Question.idx }" class="article-author-name">${Question.userId }</a>
-								<a href="/questions/${Question.idx }" class="article-header-time">
-								${Question.insertdates }
+								<a href="/questions/${qestion.idx }" class="article-author-name">${qestion.userId }</a>
+								<a href="/questions/${qestion.idx }" class="article-header-time">
+								${qestion.insertdates }
 								<i class="icon-link"></i>
 								</a>	 
 							</div> 
 						</div>
 						<div class="article-doc">
 							<br />
-							<p>${Question.contents }</p> 
+							<p>${qestion.contents }</p> 
 						</div> 
 								
 		              <c:choose>
-		              <c:when test="${Question.userId == loginUser.userId}">
+		              <c:when test="${qestion.userId == loginUser.userId}">
 		
 							<div class="control-group">
 								<div class="controls"> 
 								
 								<form id="question" class="form-write" action="/questions/questionupdateform" method="POST"> 
 									<button type="submit" class="btn btn-primary">수정하기</button>
-									<input type="hidden" name="idx" id="idx" value="${Question.idx }">
+									<input type="hidden" name="idx" id="idx" value="${qestion.idx }">
 								</form>
 						     
 								<form id="question" class="form-write" action="/questions/questiondelete" method="POST">  
 									<button type="submit" class="btn btn-primary">삭제하기</button> 
-									<input type="hidden" name="idx" id="idx" value="${Question.idx }">
+									<input type="hidden" name="idx" id="idx" value="${qestion.idx }">
 								</form>
 								 
 								</div>

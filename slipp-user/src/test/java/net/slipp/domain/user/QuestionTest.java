@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import net.slipp.domain.question.Question;
 import net.slipp.service.user.PasswordMismatchException;
 
 import org.junit.Test;

@@ -1,10 +1,10 @@
-package net.slipp.dao.user;
+package net.slipp.dao.answer;
 
 import java.sql.SQLException; 
 import java.util.ArrayList;
 import java.util.Set;
 
-import net.slipp.domain.user.Answer; 
+import net.slipp.domain.answer.Answer;
 
 public interface AnswerDao {
  

@@ -8,7 +8,8 @@ import java.util.Calendar;
 
 import javax.annotation.Resource;
 
-import net.slipp.domain.user.Question; 
+import net.slipp.dao.question.QuestionDao;
+import net.slipp.domain.question.Question;
 
 import org.junit.Test;
 

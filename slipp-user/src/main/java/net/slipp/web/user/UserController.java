@@ -3,9 +3,9 @@ package net.slipp.web.user;
 import javax.servlet.http.HttpSession;
 
 import net.slipp.domain.user.User;
+import net.slipp.service.question.QuestionService;
+import net.slipp.service.tag.TagService;
 import net.slipp.service.user.PasswordMismatchException;
-import net.slipp.service.user.QuestionService;
-import net.slipp.service.user.TagService;
 import net.slipp.service.user.UserService;
 
 import org.slf4j.Logger;
@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 
 @Controller
 @RequestMapping("/users")

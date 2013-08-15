@@ -1,4 +1,4 @@
-package net.slipp.service.user;
+package net.slipp.service.tag;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,9 +7,11 @@ import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
- 
-import net.slipp.dao.user.TagDao; 
-import net.slipp.domain.user.Tag;
+
+import net.slipp.dao.tag.TagDao;
+import net.slipp.domain.tag.Tag;
+import net.slipp.service.user.PasswordMismatchException;
+import net.slipp.service.user.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

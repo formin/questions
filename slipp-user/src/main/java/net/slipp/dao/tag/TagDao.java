@@ -1,10 +1,10 @@
-package net.slipp.dao.user;
+package net.slipp.dao.tag;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Set;
 
-import net.slipp.domain.user.Tag;
+import net.slipp.domain.tag.Tag;
 
 public interface TagDao {
 
