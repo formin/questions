@@ -1,7 +1,7 @@
 package net.slipp.domain.question; 
-  
 
 import net.slipp.service.user.PasswordMismatchException;
+  
  
 /*
  * @class Question
@@ -18,6 +18,7 @@ public class Question {
 	private String plaintags;	//	tag
 	 
 	public Question() { 
+		
 	}
 
 	public Question(Integer idx, String userId, String title, String contents, String insertdates, String updatedates, String plainTags) {

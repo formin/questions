@@ -89,7 +89,7 @@
 								<h1>태그목록</h1>
 								<ul>
 												
-									<c:if test="${empty taglist}"> 
+									<c:if test="${empty taglistCnt}"> 
 									<li>
 										<a href="/questions/tagged/tdd" class="tag">등록 된 태그가 없습니다.</a>
 									</li> 
@@ -97,7 +97,7 @@
 									 
 												
 									<!--  반복 구간 시작 -->
-									<c:forEach var="taglistCnt" items="${taglist }" varStatus="status"> 
+									<c:forEach var="taglistCnt" items="${taglistCnt }" varStatus="status"> 
 									<li>
 										<a href="/questions/tagged/tdd" class="tag">${taglistCnt.contents }&nbsp;<span class="count">${taglistCnt.count }</span></a> 
 									</li> 

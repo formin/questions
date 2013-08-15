@@ -16,13 +16,15 @@ import net.slipp.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional 
 public class TagService {
 
 	private static Logger log = LoggerFactory.getLogger(UserService.class);
 
-	@Resource(name="memoryTagDao")
+	@Resource(name="tagDao")
 	private TagDao tagDao;
 
 	public void setTagDao(TagDao TagDao){
@@ -39,23 +41,18 @@ public class TagService {
 		log.debug("TagService destroy");
 	}	
 
-	public HashSet<?> view(int idx) throws SQLException, PasswordMismatchException {
+	public ArrayList<Tag> view(int idx) throws SQLException, PasswordMismatchException {
 		  
-		return (HashSet<?>) tagDao.getTagByIdx(idx);
+		return tagDao.getTagByIdx(idx);
 	}
 
-	public ArrayList<String> getArticleList(int idx) throws SQLException {
+	public ArrayList<Tag> getArticleList(int idx) throws SQLException {
  
 		return tagDao.getArticleList(idx);
 	}
-
-	public ArrayList<Tag> getList() throws SQLException {
  
-		return tagDao.getList();
-	}
-
-	public HashSet<?> getTagList() throws SQLException {
+	public ArrayList<Tag> getTagList() throws SQLException {
  
-		return (HashSet<?>) tagDao.getTagList();
+		return tagDao.getTagList();
 	}
 }

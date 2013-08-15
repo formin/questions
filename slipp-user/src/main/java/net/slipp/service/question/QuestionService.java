@@ -11,8 +11,9 @@ import java.util.StringTokenizer;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-
+ 
 import net.slipp.dao.answer.AnswerDao;
+
 import net.slipp.dao.question.QuestionDao;
 import net.slipp.dao.tag.TagDao;
 import net.slipp.domain.answer.Answer;
@@ -38,10 +39,10 @@ public class QuestionService {
 	@Resource(name = "questionDao")
 	private QuestionDao questionDao;
 
-	@Resource(name = "memoryAnswerDao")
+	@Resource(name = "answerDao")
 	private AnswerDao answerDao;
 
-	@Resource(name = "memoryTagDao")
+	@Resource(name = "tagDao")
 	private TagDao tagDao;
 	
 	@PostConstruct
@@ -72,15 +73,15 @@ public class QuestionService {
          
 		question.setInsertdates(today);  
 		question.setUpdatedates(today);  
-
-		questionDao.insert(question); 
+		
+		int Idx = questionDao.insert(question); 
 
 		Set<String> parsedTags = parseTags(question.getPlaintags());
          
         for (String each : parsedTags) {
  
     		Tag tag = new Tag();
-    		tag.setQnaidx(1);
+    		tag.setQnaidx(Idx);
     		tag.setInsertdates(today);
     		tag.setUserId(question.getUserId());
     		tag.setContents(each);
@@ -107,7 +108,15 @@ public class QuestionService {
 
 	public void createAnswer(User user, Integer questionId, Answer answer) throws SQLException {
    
+		@SuppressWarnings("unused")
+		Question question = null;
+		question = questionDao.findByIdx(questionId);
 		
+		answer.setUserId(user.getUserId());
+		answer.setQnaidx(questionId);
+		
+		answerDao.add(answer);
+				
 	}
 	
 	public ArrayList<Question> getArticleList() throws SQLException{
@@ -176,5 +185,27 @@ public class QuestionService {
         }
 	}
 
+	/*
+	 * QnA 게시물 삭제.
+	 * 
+	 * @param Idx : 게시물번호. 
+	 */
+	public void delete(Integer Idx) throws SQLException, PasswordMismatchException {
+  
+		Question question = findByIdx(Idx);
+		if (question == null) {
+			throw new NullPointerException(Idx + " Idx doesn't existed.");
+		}
+
+		questionDao.delete(Idx);
+
+		Tag tag = new Tag();
+		tag.setQnaidx(Idx); 
+
+		tagDao.del(tag);
+
+		log.debug("tag : {}", tag);
+
+	}
 	
 }

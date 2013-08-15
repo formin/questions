@@ -88,7 +88,7 @@
 				</c:if>
 				
 				<!--  반복 구간 시작 -->
-				<c:forEach var="Answer" items="${list }" varStatus="status">	
+				<c:forEach var="list" items="${list }" varStatus="status">	
 			
 					<div class="qna-comment">
 						
@@ -99,22 +99,22 @@
 										<img src='//www.gravatar.com/avatar/e37ae9de87ccaf948d470073ca4b8da7' class="article-author-thumb" alt="" />
 									</div>
 									<div class="article-header-text">
-										<a href="/users/247/오실장" class="article-author-name">${Answer.userId }</a>
+										<a href="/users/247/오실장" class="article-author-name">${list.userId }</a>
 										<a href="#answer-770" class="article-header-time" title="퍼머링크">
-											${Answer.insertdates }
+											${list.insertdates }
 											<i class="icon-link"></i>
 										</a>
 									</div>
 								</div> 
 								<div class="article-doc comment-doc">
-									<p>${Answer.contents }</p>
+									<p>${list.contents }</p>
 								</div>
 								<div class="article-util">
 									<ul class="list-util">
 										
 										
 										<li>
-											<button type="button" class="link-answer-article" data-answer-id="770" data-answer-user-id="@${Answer.userId }"></button>
+											<button type="button" class="link-answer-article" data-answer-id="770" data-answer-user-id="@${list.userId }"></button>
 										</li>
 										
 									</ul>
@@ -135,7 +135,7 @@
               </c:when>
               <c:otherwise>
               				   
-						<form id="answer" class="form-write" action="/questions/${Question.idx }/answers" method="POST">
+						<form id="answer" class="form-write" action="/questions/${qestion.idx }/answers" method="POST">
 							<fieldset>
 								<legend class="submit-write">의견 추가하기</legend>
 								<div class="submit-write">
@@ -174,7 +174,7 @@
 								<!--  반복 구간 시작 -->
 								<c:forEach var="taglist" items="${taglist }" varStatus="status"> 
 								<li>
-									<a href="/questions/tagged/tdd" class="tag">${taglist }</a>
+									<a href="/questions/tagged/tdd" class="tag">${taglist.contents }</a>
 								</li> 
 								</c:forEach>
 								<!--  반복 구간 끝 -->

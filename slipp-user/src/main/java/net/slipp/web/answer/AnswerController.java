@@ -41,6 +41,6 @@ public class AnswerController {
 		questionService.createAnswer(user, questionId, answer);
 		return String.format("redirect:/questions/%d", questionId);
 	}
-	
+
 }
  

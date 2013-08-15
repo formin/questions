@@ -4,17 +4,20 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpSession;
 
+ 
+
 import net.slipp.domain.question.Question;
 import net.slipp.domain.user.User;
 import net.slipp.service.answer.AnswerService;
 import net.slipp.service.question.QuestionService;
 import net.slipp.service.tag.TagService;
 import net.slipp.service.user.PasswordMismatchException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping; 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /*
@@ -44,8 +47,7 @@ public class QuestionController {
 
 		Question question = questionService.view(idx);
 		
-		model.addAttribute("qestion", question);
-		model.addAttribute("Answer", answerService.view(idx));  
+		model.addAttribute("qestion", question); 
 		model.addAttribute("list", answerService.getArticleList(idx));	
 		model.addAttribute("taglist", tagService.getArticleList(idx));		
 		return "question/view"; 
@@ -64,7 +66,7 @@ public class QuestionController {
 		if (user == null)
 		{ 
 			model.addAttribute("list", questionService.getArticleList());
-			model.addAttribute("taglist", tagService.getList());
+			model.addAttribute("taglist", tagService.getTagList());
 			return "question/list";
 		}
  
@@ -83,8 +85,7 @@ public class QuestionController {
 		
 		questionService.insert(question);
 
-		model.addAttribute("list", questionService.getArticleList());
-		model.addAttribute("taglist", tagService.getList());
+		model.addAttribute("list", questionService.getArticleList()); 
 		model.addAttribute("taglistCnt", tagService.getTagList());
 		return "question/list"; 
 	} 
@@ -95,8 +96,7 @@ public class QuestionController {
 	 */
 	@RequestMapping(value = "/list")
 	public String list(Model model) throws Exception {    
-		model.addAttribute("list", questionService.getArticleList());
-		model.addAttribute("taglist", tagService.getList());
+		model.addAttribute("list", questionService.getArticleList()); 
 		model.addAttribute("taglistCnt", tagService.getTagList());
 		return "question/list"; 
 	} 
@@ -114,7 +114,7 @@ public class QuestionController {
 		  
 		if (user == null)
 		{ 
-			model.addAttribute("taglist", tagService.getList());
+			model.addAttribute("taglist", tagService.getTagList());
 			model.addAttribute("list", questionService.getArticleList());
 			return "question/list";
 		}
@@ -140,7 +140,7 @@ public class QuestionController {
 		  
 		if (user == null)
 		{ 
-			model.addAttribute("taglist", tagService.getList());
+			model.addAttribute("taglist", tagService.getTagList());
 			model.addAttribute("list", questionService.getArticleList());
 			return "question/list";
 		}
@@ -168,11 +168,13 @@ public class QuestionController {
 			if (user == null)
 			{ 
 				model.addAttribute("list", questionService.getArticleList());
-				model.addAttribute("taglist", tagService.getList());
+				model.addAttribute("taglist", tagService.getTagList());
 				return "question/list";
 			}
 			
 			question.setIdx(idx); 
+			questionService.delete(idx);
+			
 			return "redirect:/"; 
 	}
 	

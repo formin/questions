@@ -8,8 +8,6 @@ import net.slipp.domain.answer.Answer;
 
 public interface AnswerDao {
  
-	void add(Answer answer) throws SQLException;
-	@SuppressWarnings("rawtypes")
-	Set getAnswerByIdx(Integer Idx) throws SQLException;
+	void add(Answer answer) throws SQLException; 
 	ArrayList<Answer> getArticleList(Integer Idx) throws SQLException;
 }

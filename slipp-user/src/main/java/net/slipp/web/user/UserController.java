@@ -7,7 +7,6 @@ import net.slipp.service.question.QuestionService;
 import net.slipp.service.tag.TagService;
 import net.slipp.service.user.PasswordMismatchException;
 import net.slipp.service.user.UserService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +53,7 @@ public class UserController {
 	public String login(String userId, String password, HttpSession session, Model model) throws Exception {
 		try {
 			User user = userService.login(userId, password);
-			session.setAttribute("loginUser", user); 
-			model.addAttribute("taglist", tagService.getList());
+			session.setAttribute("loginUser", user);  
 			model.addAttribute("taglistCnt", tagService.getTagList());
 			return "question/list"; 
 		} catch (PasswordMismatchException e) {

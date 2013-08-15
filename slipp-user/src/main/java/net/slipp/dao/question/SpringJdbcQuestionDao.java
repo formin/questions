@@ -5,8 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import net.slipp.domain.question.Question;
-import net.slipp.domain.user.User;
+import net.slipp.domain.question.Question; 
 import net.slipp.support.AbstractDaoSupport;
 
 import org.springframework.dao.support.DataAccessUtils;
@@ -18,21 +17,37 @@ import org.springframework.stereotype.Repository;
 public class SpringJdbcQuestionDao extends AbstractDaoSupport implements QuestionDao {
 
 	@Override
-	public void insert(Question question) throws SQLException {
+	public int insert(Question question) throws SQLException {
 		String sql = "INSERT INTO QUESTION VALUES (?, ?, ?, ?, ?, ?, ?)";
 		getJdbcTemplate().update(sql, null, question.getUserId(), question.getTitle(), question.getContents(), question.getInsertdates(), question.getUpdatedates(), question.getPlaintags());
+		
+		sql = "SELECT MAX(IDX) FROM QUESTION";
+		int total = getJdbcTemplate().queryForInt(sql);
+	 
+		return total;
+		
 	}
 
+
+	@Override
+	public void delete(Integer idx) throws SQLException{
+
+		String sql = "DELETE FROM QUESTION WHERE IDX=?";
+		getJdbcTemplate().update(sql, idx);
+		
+	};
+	
+	
 	@Override
 	public ArrayList<Question> getArticleList() throws SQLException {
 		
 		String sql = "SELECT IDX, USERID, TITLE FROM QUESTION";
 		
 
-		ArrayList<Question> customers  = (ArrayList<Question>) getJdbcTemplate().query(sql,
+		ArrayList<Question> qustion  = (ArrayList<Question>) getJdbcTemplate().query(sql,
 				new BeanPropertyRowMapper<Question>(Question.class));
 	 
-		return customers;
+		return qustion;
 		 
 	}
 	

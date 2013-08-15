@@ -16,34 +16,19 @@ import net.slipp.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional 
 public class AnswerService {
-
-	private static Logger log = LoggerFactory.getLogger(UserService.class);
-
-	@Resource(name="memoryAnswerDao")
+ 
+	@Resource(name="answerDao")
 	private AnswerDao answerDao;
 
-	public void setAnswerDao(AnswerDao AnswerDao){
-		this.answerDao = AnswerDao;
+	public void setAnswerDao(AnswerDao answerDao){
+		this.answerDao = answerDao;
 	}
-
-	@PostConstruct
-	public void initialize() {
-		log.debug("AnswerService initialize");
-	}
-	
-	@PreDestroy
-	public void destroy() {
-		log.debug("AnswerService destroy");
-	}	
-
-	public HashSet<?> view(int idx) throws SQLException, PasswordMismatchException {
-		  
-		return (HashSet<?>) answerDao.getAnswerByIdx(idx);
-	}
-
+  
 	public ArrayList<Answer> getArticleList(int idx) throws SQLException {
  
 		return answerDao.getArticleList(idx);

@@ -19,6 +19,8 @@ public abstract class AbstractDaoSupport extends JdbcDaoSupport {
 		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 		populator.addScript(new ClassPathResource("user.sql"));
 		populator.addScript(new ClassPathResource("question.sql"));
+		populator.addScript(new ClassPathResource("answer.sql"));
+		populator.addScript(new ClassPathResource("tag.sql"));
 		DatabasePopulatorUtils.execute(populator, dataSource);
 	}
 }
