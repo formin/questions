@@ -1,8 +1,7 @@
 package net.slipp.service.tag;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.ArrayList; 
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -54,5 +53,10 @@ public class TagService {
 	public ArrayList<Tag> getTagList() throws SQLException {
  
 		return tagDao.getTagList();
+	}
+	
+	public Tag add(Tag tag) throws SQLException{
+		
+		return tagDao.add(tag);
 	}
 }

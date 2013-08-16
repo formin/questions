@@ -1,14 +1,13 @@
 package net.slipp.dao.tag;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.ArrayList; 
 
 import net.slipp.domain.tag.Tag;
 
 public interface TagDao {
 
-	void add(Tag tag) throws SQLException;
+	public Tag add(Tag tag) throws SQLException;
 	void del(Tag tag) throws SQLException;
 	ArrayList<Tag> getTagByIdx(Integer Idx) throws SQLException;
 	ArrayList<Tag> getArticleList(Integer Idx) throws SQLException; 

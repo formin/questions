@@ -15,11 +15,9 @@ import javax.annotation.Resource;
 import net.slipp.dao.answer.AnswerDao;
 
 import net.slipp.dao.question.QuestionDao;
-import net.slipp.dao.tag.TagDao;
-import net.slipp.domain.answer.Answer;
+import net.slipp.dao.tag.TagDao; 
 import net.slipp.domain.question.Question;
-import net.slipp.domain.tag.Tag;
-import net.slipp.domain.user.User;
+import net.slipp.domain.tag.Tag; 
 import net.slipp.service.user.ExistedUserException;
 import net.slipp.service.user.PasswordMismatchException;
 import net.slipp.service.user.UserService;
@@ -92,7 +90,9 @@ public class QuestionService {
     		
         }
         
-		return question;
+		//return question;
+		return findByIdx(Idx);
+		
 	}
 	
 	static Set<String> parseTags(String plainTags) {
@@ -105,20 +105,6 @@ public class QuestionService {
     }
 	  
  
-
-	public void createAnswer(User user, Integer questionId, Answer answer) throws SQLException {
-   
-		@SuppressWarnings("unused")
-		Question question = null;
-		question = questionDao.findByIdx(questionId);
-		
-		answer.setUserId(user.getUserId());
-		answer.setQnaidx(questionId);
-		
-		answerDao.add(answer);
-				
-	}
-	
 	public ArrayList<Question> getArticleList() throws SQLException{
 		
 		return questionDao.getArticleList();

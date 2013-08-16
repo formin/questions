@@ -1,14 +1,11 @@
 package net.slipp.dao.tag;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.ArrayList; 
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
-
-import net.slipp.dao.answer.AnswerDao;
-import net.slipp.domain.answer.Answer;
+ 
 import net.slipp.domain.tag.Tag;
 import net.slipp.support.AbstractDaoSupport;
 
@@ -17,9 +14,11 @@ public class SpringJdbcTagDao extends AbstractDaoSupport implements TagDao {
 
 
 	@Override
-	public void add(Tag tag) throws SQLException{
+	public Tag add(Tag tag) throws SQLException{
 		String sql = "INSERT INTO TAG VALUES (?, ?, ?, ?, ?, ?)"; 
 		getJdbcTemplate().update(sql, null, tag.getQnaidx(), 1, tag.getUserId(), tag.getContents(), tag.getInsertdates());
+		
+		return tag;
 	};
 	
 

@@ -1,4 +1,4 @@
-package net.slipp.domain.user;
+package net.slipp.domain.question;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import net.slipp.domain.question.Question;
+import net.slipp.domain.user.User;
 import net.slipp.service.user.PasswordMismatchException;
 
 import org.junit.Test;

@@ -7,8 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import net.slipp.domain.answer.Answer;
 import net.slipp.domain.user.User;
-import net.slipp.service.question.QuestionService;
-import net.slipp.service.tag.TagService;
+import net.slipp.service.answer.AnswerService; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/tags")
 public class TagController {
-
+ 
 	@Autowired
-	private TagService tagService;
-
-	@Autowired
-	private QuestionService questionService;
+	private AnswerService answerService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String create(HttpSession session, Model model, @PathVariable Integer questionId, Answer answer) throws Exception { 
@@ -42,7 +38,7 @@ public class TagController {
         String today = (new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date)); 
         answer.setInsertdates(today);
         
-        questionService.createAnswer(user, questionId, answer);
+        answerService.createAnswer(user, questionId, answer);
 		return String.format("redirect:/questions/%d", questionId);
 	}
 	

@@ -1,12 +1,11 @@
 package net.slipp.domain.user;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
+import static org.junit.Assert.*;  
+import org.junit.Test; 
+ 
 public class UserTest {
-
+  
 	@Test
 	public void 비밀번호_일치() {
 		User user = new User("userId", "password", "name", "javajigi@email.com");

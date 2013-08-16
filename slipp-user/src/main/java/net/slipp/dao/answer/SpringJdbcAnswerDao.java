@@ -1,25 +1,23 @@
 	package net.slipp.dao.answer;
-
-import java.sql.ResultSet;
+ 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.ArrayList; 
 
 import net.slipp.domain.answer.Answer; 
 import net.slipp.support.AbstractDaoSupport;
-
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
+ 
+import org.springframework.jdbc.core.BeanPropertyRowMapper; 
 import org.springframework.stereotype.Repository;
  
 @Repository("answerDao")
 public class SpringJdbcAnswerDao extends AbstractDaoSupport implements AnswerDao {
 
 	@Override
-	public void add(Answer answer) throws SQLException{
+	public Answer add(Answer answer) throws SQLException{
 		String sql = "INSERT INTO ANSWER VALUES (?, ?, ?, ?, ?)";
 		getJdbcTemplate().update(sql, null, answer.getQnaidx(), answer.getUserId(), answer.getContents(), answer.getInsertdates());
+		
+		return answer;
 	}
  
 	@Override
